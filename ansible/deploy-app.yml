@@ -1,0 +1,95 @@
+---
+- name: Deploy Demo App to Kubernetes Cluster
+  hosts: k8s_master
+  become: yes
+  vars:
+    docker_image: "yourdockerhubusername/demo-app:latest"
+    app_namespace: "default"
+  
+  tasks:
+    - name: Ensure kubectl is installed
+      command: kubectl version --client
+      register: kubectl_check
+      changed_when: false
+      ignore_errors: yes
+    
+    - name: Copy Kubernetes manifests to master node
+      copy:
+        src: ../k8s/
+        dest: /home/ubuntu/k8s-manifests/
+        owner: ubuntu
+        group: ubuntu
+        mode: '0644'
+    
+    - name: Apply Kubernetes deployment
+      command: kubectl apply -f /home/ubuntu/k8s-manifests/deployment.yaml
+      register: deployment_result
+    
+    - name: Apply Kubernetes service
+      command: kubectl apply -f /home/ubuntu/k8s-manifests/service.yaml
+      register: service_result
+    
+    - name: Wait for deployment to be ready
+      command: kubectl rollout status deployment/demo-app-deployment -n {{ app_namespace }}
+      register: rollout_status
+      retries: 30
+      delay: 10
+      until: rollout_status.rc == 0
+    
+    - name: Get deployment status
+      command: kubectl get deployments,services,pods -n {{ app_namespace }}
+      register: status_output
+    
+    - name: Display deployment status
+      debug:
+        var: status_output.stdout_lines
+---
+- name: Configure Docker on Worker Nodes
+  hosts: k8s_workers
+  become: yes
+  
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+    
+    - name: Install required packages
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+        state: present
+    
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    
+    - name: Add Docker repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+    
+    - name: Install Docker
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: present
+    
+    - name: Start and enable Docker
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+    
+    - name: Add user to docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes

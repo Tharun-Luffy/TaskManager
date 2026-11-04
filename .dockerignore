@@ -1,0 +1,9 @@
+target/
+.git/
+.gitignore
+README.md
+*.md
+k8s/
+ansible/
+.github/
+Jenkinsfile
