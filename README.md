@@ -1,8 +1,8 @@
-# End-to-End Cloud-Based CI/CD Pipeline for Java Web Application
+# End-to-End Cloud-Based CI/CD Pipeline for Todo/Task Manager Application
 
 ## Project Overview
 
-This project demonstrates the design and implementation of a complete Continuous Integration and Continuous Deployment (CI/CD) pipeline for a Java web application using modern DevOps tools and practices. The pipeline automates building, testing, containerization, and deployment to a cloud-hosted Kubernetes environment.
+This project demonstrates the design and implementation of a complete Continuous Integration and Continuous Deployment (CI/CD) pipeline for a Java web-based Todo/Task Manager application using modern DevOps tools and practices. The pipeline automates building, testing, containerization, and deployment to a cloud-hosted Kubernetes environment.
 
 ## Architecture
 
@@ -17,9 +17,17 @@ The solution integrates the following components:
 
 ## Application
 
-A simple Spring Boot web application with the following endpoints:
-- `GET /` - Returns welcome message
-- `GET /health` - Health check endpoint
+A simple Spring Boot REST API Todo/Task Manager application that uses an in-memory ArrayList for data storage (no database required). 
+
+**API Endpoints:**
+- `GET /api/todos/` - Welcome message
+- `GET /api/todos/health` - Health check endpoint
+- `GET /api/todos` - Get all tasks
+- `GET /api/todos/{id}` - Get task by ID
+- `POST /api/todos` - Create a new task
+- `PUT /api/todos/{id}` - Update a task
+- `PATCH /api/todos/{id}/complete` - Mark task as completed
+- `DELETE /api/todos/{id}` - Delete a task
 
 ## Project Structure
 
@@ -66,7 +74,7 @@ docker build -t demo-app:latest .
 docker run -p 8080:8080 demo-app:latest
 ```
 
-Application will be available at `http://localhost:8080`
+Application will be available at `http://localhost:8080/api/todos`
 
 ### Run Tests
 ```bash
