@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo Task Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Todo Task Manager</h1>
+        <p class="subtitle">Deployed via Azure AKS CI/CD Pipeline</p>
+        
+        <div class="add-todo">
+            <input type="text" id="todoTitle" placeholder="Task title" required>
+            <input type="text" id="todoDescription" placeholder="Description (optional)">
+            <button onclick="addTodo()">Add Task</button>
+        </div>
+        
+        <div id="todoList" class="todo-list">
+            <p class="loading">Loading tasks...</p>
+        </div>
+        
+        <div class="footer">
+            <p>API Status: <span id="apiStatus">Checking...</span></p>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
