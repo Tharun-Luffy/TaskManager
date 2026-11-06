@@ -4,6 +4,8 @@ metadata:
   name: demo-app-deployment
   labels:
     app: demo-app
+  annotations:
+    description: "Todo Task Manager - CI/CD Pipeline Demo"
 spec:
   replicas: 1
   selector:
