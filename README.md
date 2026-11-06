@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project demonstrates the design and implementation of a complete Continuous Integration and Continuous Deployment (CI/CD) pipeline for a Java web-based Todo/Task Manager application using modern DevOps tools and practices. The pipeline automates building, testing, containerization, and deployment to a cloud-hosted Kubernetes environment
+This project demonstrates the design and implementation of a complete Continuous Integration and Continuous Deployment (CI/CD) pipeline for a Java web-based Todo/Task Manager application using modern DevOps tools and practices. The pipeline automates building, testing, containerization, and deployment to a cloud-hosted Kubernetes environment.
 
 ## Architecture
 
